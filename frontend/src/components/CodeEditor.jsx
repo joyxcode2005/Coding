@@ -2,15 +2,19 @@ import { useState } from "react";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
 import { languageOptions } from "../constants";
+import Modal from "./Modal";
 
 const rapidApikey = import.meta.env.VITE_YOUR_RAPIDAPI_KEY;
 
-const CodeEditor = () => {
-  const [code, setCode] = useState("// Write your code here");
+const CodeEditor = ({ question }) => {
+  const [solution, setSolution] = useState("// Write your code here");
   const [languageId, setLanguageId] = useState(48);
   const [result, setResult] = useState(null);
   const [language, setLanguage] = useState("C");
   const [output, setOutput] = useState("");
+  const [apiResponse, setApiResponse] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [loadingModal, setLoadingModal] = useState(false);
 
   const handleLanguageChange = (e) => {
     const selectedLang = languageOptions.find(
@@ -18,7 +22,11 @@ const CodeEditor = () => {
     );
     setLanguageId(selectedLang.id);
     setLanguage(selectedLang.monaco);
-    setCode("// Write your code here");
+    if (selectedLang.name === "Python") {
+      setSolution("# Write your code here");
+    } else {
+      setSolution("// Write your code here");
+    }
   };
 
   const handleCompile = async () => {
@@ -32,7 +40,7 @@ const CodeEditor = () => {
         "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
       },
       data: {
-        source_code: code,
+        source_code: solution,
         language_id: languageId,
       },
     };
@@ -74,8 +82,56 @@ const CodeEditor = () => {
     }
   };
 
+  const handleSubmit = async () => {
+    // Check if there's at least one non-comment, non-empty line
+    const hasNonCommentLine = solution.split("\n").some((line) => {
+      const trimmed = line.trim();
+      return (
+        trimmed !== "" && !trimmed.startsWith("//") && !trimmed.startsWith("#")
+      );
+    });
+
+    if (!hasNonCommentLine) {
+      setOutput("Please write your code before submitting.")
+      return;
+    }
+
+    setShowModal(true);
+    setLoadingModal(true);
+    const options = {
+      method: "POST",
+      url: import.meta.env.VITE_BACKEND_URL + "/score",
+      data: {
+        question,
+        solution,
+        language,
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const response = await axios.request(options);
+      setApiResponse(response.data.message);
+    } catch (error) {
+      console.error(error);
+      setApiResponse("Something went wrong.");
+    } finally {
+      setLoadingModal(false);
+    }
+  };
+
   return (
     <div className="flex flex-col h-[100%] w-[55%]">
+      <div className="absolute">
+        <Modal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          loading={loadingModal}
+          response={apiResponse}
+        />
+      </div>
       <div className="w-full p-2 flex items-center gap-4">
         <select
           onChange={handleLanguageChange}
@@ -93,7 +149,10 @@ const CodeEditor = () => {
         >
           Run Code
         </button>
-        <button className="bg-green-500 px-4 py-2 rounded-xl text-white font-bold cursor-pointer">
+        <button
+          onClick={handleSubmit}
+          className="bg-green-500 px-4 py-2 rounded-xl text-white font-bold cursor-pointer"
+        >
           Submit
         </button>
       </div>
@@ -102,8 +161,8 @@ const CodeEditor = () => {
         height="45vh"
         width="100%"
         language={language}
-        value={code}
-        onChange={(value) => setCode(value)}
+        value={solution}
+        onChange={(value) => setSolution(value)}
         options={{
           mouseWheelZoom: true,
           fontSize: 14,

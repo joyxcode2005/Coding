@@ -8,9 +8,9 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const passwords = {
-    1: "round1pass",
-    2: "round2pass",
-    3: "round3pass",
+    EASY: "easypass",
+    MEDIUM: "mediumpass",
+    HARD: "hardpass",
   };
 
   const handleRoundClick = (round) => {
@@ -23,7 +23,7 @@ const HomePage = () => {
     if (password === passwords[selectedRound]) {
       setShowModal(false);
       setPassword("");
-      navigate(`/round${selectedRound}`);
+      navigate(`/${selectedRound.toLowerCase()}`);
     } else {
       alert("Incorrect password!");
       setPassword("");
@@ -37,14 +37,20 @@ const HomePage = () => {
           INNOVARIUM EVENT: CODING
         </h2>
         <div className="mt-10 flex gap-5">
-          {[1, 2, 3].map((round) => (
+          {["EASY", "MEDIUM", "HARD"].map((round) => (
             <button
               key={round}
               onClick={() => handleRoundClick(round)}
-              className="flex items-center gap-2 bg-white/50 text-black font-source-code font-bold text-2xl py-3 px-5 rounded-lg hover:bg-white/80 transition duration-300 cursor-pointer"
+              className="flex items-center gap-2 bg-black/50 text-black font-source-code font-bold text-2xl py-3 px-5 rounded-lg hover:bg-white/80 transition duration-300 cursor-pointer"
             >
               <img src="folder.png" alt="folder_icon" />
-              <span>Round {round}</span>
+              {
+                round === "EASY"
+                  ? <span className="text-green-400">{round}</span>
+                  : round === "MEDIUM"
+                  ? <span className="text-yellow-400">{round}</span>
+                  : <span className="text-red-600">{round}</span>
+              }
             </button>
           ))}
         </div>

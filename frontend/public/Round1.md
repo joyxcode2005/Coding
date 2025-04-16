@@ -1,34 +1,27 @@
-# Round 1 :  Fibonacci Number
+1. Two Sum
+   Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
 
-## Problem Statement
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
 
-The **Fibonacci numbers**, commonly denoted F(n), form a sequence, called the Fibonacci sequence, such that each number is the sum of the two preceding ones, starting from 0 and 1. That is,
+You can return the answer in any order.
 
+Example 1:
 
-Given `n`, calculate `F(n)`.
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+Example 2:
 
-## Examples
+Input: nums = [3,2,4], target = 6
+Output: [1,2]
+Example 3:
 
-**Example 1:**
-```
-Input: n = 2
-Output: 1
-Explanation: F(2) = F(1) + F(0) = 1 + 0 = 1
-```
+Input: nums = [3,3], target = 6
+Output: [0,1]
 
-**Example 2:**
-```
-Input: n = 3
-Output: 2
-Explanation: F(3) = F(2) + F(1) = 1 + 1 = 2
-```
+Constraints:
 
-**Example 3:**
-```
-Input: n = 4
-Output: 3
-Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3
-```
-
-## Constraints:
-- 0 ≤ n ≤ 30
+2 <= nums.length <= 104
+-109 <= nums[i] <= 109
+-109 <= target <= 109
+Only one valid answer exists.

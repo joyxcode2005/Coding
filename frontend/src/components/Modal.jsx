@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 const Modal = ({ isOpen, loading, response }) => {
   if (!isOpen) return null;
 
+  console.log("This is the modal response: ", response);
+
   const renderFormattedResponse = () => {
+
     if (!response || typeof response !== "string") return null;
 
     const lines = response
@@ -13,10 +16,10 @@ const Modal = ({ isOpen, loading, response }) => {
       .filter((line) => line.trim() !== "");
 
     // Handle just "Incorrect Solution"
-    if (lines.length === 1 && lines[0].toLowerCase().includes("incorrect")) {
+    if (response === "Incorrect code") {
       return (
         <p className="text-red-600 font-semibold text-lg text-center">
-          ❌ {lines[0]}
+          ❌ Incorrect Solution
         </p>
       );
     }
@@ -48,7 +51,10 @@ const Modal = ({ isOpen, loading, response }) => {
         );
       } else if (line.toLowerCase().includes("overall score")) {
         return (
-          <p key={index} className="text-black font-bold mt-3 border-t pt-2 text-xl">
+          <p
+            key={index}
+            className="text-black font-bold mt-3 border-t pt-2 text-xl"
+          >
             🏆 {line}
           </p>
         );
@@ -73,7 +79,7 @@ const Modal = ({ isOpen, loading, response }) => {
         ) : (
           <div className="text-sm space-y-1">{renderFormattedResponse()}</div>
         )}
-        <div className="w-full flex items-center justify-center mt-10"> 
+        <div className="w-full flex items-center justify-center mt-10">
           <Link
             to={"/"}
             className="bg-slate-900 text-white px-8 py-2 mt-4 rounded-xl"

@@ -6,7 +6,7 @@ import Modal from "./Modal";
 
 const rapidApikey = import.meta.env.VITE_YOUR_RAPIDAPI_KEY;
 
-const CodeEditor = ({ question }) => {
+const CodeEditor = ({ difficulty }) => {
   const [solution, setSolution] = useState("// Write your code here");
   const [languageId, setLanguageId] = useState(48);
   const [result, setResult] = useState(null);
@@ -23,7 +23,19 @@ const CodeEditor = ({ question }) => {
     setLanguageId(selectedLang.id);
     setLanguage(selectedLang.monaco);
     if (selectedLang.name === "Python") {
-      setSolution("# Write your code here");
+      switch (difficulty) {
+        case "easy":
+          setSolution(`# Write your code here\ndef twoSum(nums, target):`);
+          break;
+        case "medium":
+          setSolution(`# Write your code here`);
+          break;
+        case "hard":
+          setSolution(`# Write your code here`);
+          break;
+        default:
+          setSolution(`# Write your code here`);
+      }
     } else {
       setSolution("// Write your code here");
     }
@@ -82,6 +94,7 @@ const CodeEditor = ({ question }) => {
     }
   };
 
+
   const handleSubmit = async () => {
     // Check if there's at least one non-comment, non-empty line
     const hasNonCommentLine = solution.split("\n").some((line) => {
@@ -90,19 +103,19 @@ const CodeEditor = ({ question }) => {
         trimmed !== "" && !trimmed.startsWith("//") && !trimmed.startsWith("#")
       );
     });
-
     if (!hasNonCommentLine) {
-      setOutput("Please write your code before submitting.")
+      setOutput("Please write your code before submitting.");
       return;
     }
 
     setShowModal(true);
     setLoadingModal(true);
-    const options = {
+
+    const testOptions = {
       method: "POST",
-      url: import.meta.env.VITE_BACKEND_URL + "/score",
+      url: import.meta.env.VITE_BACKEND_URL + "/test",
       data: {
-        question,
+        difficulty,
         solution,
         language,
       },
@@ -112,12 +125,24 @@ const CodeEditor = ({ question }) => {
     };
 
     try {
-      const response = await axios.request(options);
-      setApiResponse(response.data.message);
+      const response = await axios.request(testOptions);
+      if (response.data.result === "correct code") {
+        const scoreOptions = {
+          method: "POST",
+          url: import.meta.env.VITE_BACKEND_URL + "/score",
+          data: {
+            solution,
+          },
+        };
+
+        const response = await axios.request(scoreOptions);
+        setApiResponse(response.data.message);
+      } else {
+        setApiResponse("Incorrect code");
+      }
     } catch (error) {
-      console.error(error);
-      setApiResponse("Something went wrong.");
-    } finally {
+      console.log("Error: ", error);
+    } finally{
       setLoadingModal(false);
     }
   };

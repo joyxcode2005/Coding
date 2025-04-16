@@ -33,7 +33,7 @@ const RoundOne = () => {
             <ReactMarkdown>{markdown}</ReactMarkdown>
           </div>
         </div>
-        <CodeEditor question={markdown} />
+        <CodeEditor difficulty="easy"  />
       </div>
     </div>
   );

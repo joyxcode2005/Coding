@@ -1,19 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-
-bool arraysEqual(int* a, int* b, int size) {
-  for (int i = 0; i < size; i++) {
-      if (a[i] != b[i])
-          return false;
-  }
-  return true;
-}
-
 // Forward declaration of user's function
-int *twoSum(int *nums, int numsSize, int target, int *returnSize);
-
 bool arraysEqual(int *a, int *b, int size)
 {
   for (int i = 0; i < size; i++)

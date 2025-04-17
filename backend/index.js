@@ -20,6 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+
+// "/score" endpoint to generate the score for the code using gemini AI API
 app.post("/score", async (req, res) => {
   const { solution } = req.body;
 
@@ -36,18 +38,17 @@ app.post("/score", async (req, res) => {
   }
 });
 
+// "/test" endpoint to validate the user code by running the test cases using judge0 API
+
 app.post("/test", async (req, res) => {
   const { solution, language, difficulty } = req.body;
 
-  console.log(language)
   
   const langId = languageMap[language];
-  
-  console.log(langId)
 
   if (!langId) return res.status(400).json({ error: "Unsupported language" });
 
-  const ext = language === "python" ? "py" : language === "C" ? "c" : "java";
+  const ext = language === "python" ? "py" : language === "c" ? "c" : "java";
   const testFilePath = path.join(
     __dirname,
     "testcases",
@@ -63,9 +64,6 @@ app.post("/test", async (req, res) => {
 
   // Combine solution + test case (make sure testCaseCode calls the solution code)
   const combinedCode = `${solution}\n\n${testCaseCode}`;
-  console.log(combinedCode);
-  console.log(langId);
-
 
 
   try {
@@ -91,7 +89,6 @@ app.post("/test", async (req, res) => {
       stdout.includes("ALL_TESTS_PASSED")
     ) {
       return res.json({ result: "correct code", output: stdout, error: stderr });
-      console.log(stderr)
     } else {
       return res.json({
         result: "incorrect code",

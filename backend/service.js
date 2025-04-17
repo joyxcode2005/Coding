@@ -8,6 +8,8 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
+
+// Makeshift function to generate the score using gemini api on user code
 export default async function getScoreGemini( solution) {
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash", // Use pro for deeper reasoning; flash for faster/lightweight

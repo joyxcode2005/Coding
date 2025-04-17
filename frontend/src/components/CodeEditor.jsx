@@ -7,7 +7,13 @@ import Modal from "./Modal";
 const rapidApikey = import.meta.env.VITE_YOUR_RAPIDAPI_KEY;
 
 const CodeEditor = ({ difficulty }) => {
-  const [solution, setSolution] = useState("// Write your code here");
+  const [solution, setSolution] = useState(
+    difficulty === "easy"
+      ? "// Write your code here\n int* twoSum(int* nums, int numsSize, int target, int* returnSize){}"
+      : difficulty === "medium"
+      ? "// Write your code here"
+      : "// Write your code here"
+  );
   const [languageId, setLanguageId] = useState(48);
   const [result, setResult] = useState(null);
   const [language, setLanguage] = useState("C");
@@ -36,8 +42,38 @@ const CodeEditor = ({ difficulty }) => {
         default:
           setSolution(`# Write your code here`);
       }
-    } else {
-      setSolution("// Write your code here");
+    } else if (selectedLang.name === "C") {
+      switch (difficulty) {
+        case "easy":
+          setSolution(
+            `// Write your code here\nint* twoSum(int* nums, int numsSize, int target, int* returnSize){}`
+          );
+          break;
+        case "medium":
+          setSolution(`# Write your code here`);
+          break;
+        case "hard":
+          setSolution(`# Write your code here`);
+          break;
+        default:
+          setSolution(`# Write your code here`);
+      }
+    } else if (selectedLang.name === "Java") {
+      switch (difficulty) {
+        case "easy":
+          setSolution(
+            `// Write your code here\npublic class TwoSum {\n  public static int[] twoSum(int[] nums, int target) {\n}\n}`
+          );
+          break;
+        case "medium":
+          setSolution(`// Write your code here`);
+          break;
+        case "hard":
+          setSolution(`// Write your code here`);
+          break;
+        default:
+          setSolution(`// Write your code here`);
+      }
     }
   };
 
@@ -94,7 +130,6 @@ const CodeEditor = ({ difficulty }) => {
     }
   };
 
-
   const handleSubmit = async () => {
     // Check if there's at least one non-comment, non-empty line
     const hasNonCommentLine = solution.split("\n").some((line) => {
@@ -142,13 +177,13 @@ const CodeEditor = ({ difficulty }) => {
       }
     } catch (error) {
       console.log("Error: ", error);
-    } finally{
+    } finally {
       setLoadingModal(false);
     }
   };
 
   return (
-    <div className="flex flex-col h-[100%] w-[55%]">
+    <div className="flex flex-col h-[100%] w-[65%]">
       <div className="absolute">
         <Modal
           isOpen={showModal}

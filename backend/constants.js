@@ -17,3 +17,9 @@ Space complexity: O(...)  y / 10
 Readability: z / 10  
 Overall Score: (x + y + z) / 3 = ... / 10
 `;
+
+export const languageMap = {
+  python: 71,
+  C: 50,
+  java: 62,
+};

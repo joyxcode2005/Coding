@@ -3,9 +3,10 @@ import cors from "cors";
 import morgan from "morgan";
 import getScoreGemini from "./service.js";
 import path from "path";
-import { fileURLToPath } from 'url';
-import fs from 'fs';
-import { exec } from "child_process";
+import { fileURLToPath } from "url";
+import fs from "fs";
+import { languageMap } from "./constants.js";
+import axios from "axios";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,8 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.post("/score", async (req, res) => {
-  const { solution} = req.body;
-
+  const { solution } = req.body;
 
   if (!solution) {
     res.send({ status: "error", message: "No code provided" });
@@ -30,46 +30,79 @@ app.post("/score", async (req, res) => {
   const response = await getScoreGemini(solution);
 
   if (response) {
-    // const lines = response.split('\n');
-    // const tableData = lines.map((line, index) => ({ line: index + 1, content: line }));
-    // res.send({ status: "success", message: { tableData } });
     res.send({ status: "success", message: response });
   } else {
     res.send({ status: "error", message: "Failed to get score" });
   }
 });
 
-app.post("/test", (req, res) => {
-  const { solution, difficulty, language } = req.body;
+app.post("/test", async (req, res) => {
+  const { solution, language, difficulty } = req.body;
 
-  const langDir = path.join(__dirname, "testcases", language);
-  const testFile = path.join(
-    langDir,
-    `${difficulty}.${language === "python" ? "py" : language === "C" ? "c" : "java"}`
+  console.log(language)
+  
+  const langId = languageMap[language];
+  
+  console.log(langId)
+
+  if (!langId) return res.status(400).json({ error: "Unsupported language" });
+
+  const ext = language === "python" ? "py" : language === "C" ? "c" : "java";
+  const testFilePath = path.join(
+    __dirname,
+    "testcases",
+    language,
+    `${difficulty}.${ext}`
   );
 
-  if (!fs.existsSync(testFile)) {
-    return res.status(400).json({ error: "Invalid difficulty or language" });
+  if (!fs.existsSync(testFilePath)) {
+    return res.status(400).json({ error: "Test case not found" });
   }
 
-  // Write the submitted solution to a temp file
-  const solutionPath = path.join(langDir, "solution.py");
-  fs.writeFileSync(solutionPath, solution);
+  const testCaseCode = fs.readFileSync(testFilePath, "utf-8");
 
-  // Run the test file
-  exec(`python3 "${testFile}"`, { timeout: 5000 }, (err, stdout, stderr) => {
-    console.log(testFile)
-    if (err) {
-      console.log(err.message);
-      return res.json({ result: "incorrect code", error: stderr });
-    }
+  // Combine solution + test case (make sure testCaseCode calls the solution code)
+  const combinedCode = `${solution}\n\n${testCaseCode}`;
+  console.log(combinedCode);
+  console.log(langId);
 
-    if (stdout.includes("ALL_TESTS_PASSED")) {
-      return res.json({ result: "correct code" });
+
+
+  try {
+    const response = await axios.post(
+      "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true",
+      {
+        source_code: combinedCode,
+        language_id: langId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+          "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
+        },
+      }
+    );
+
+    const { stdout, stderr, status } = response.data;
+
+    if (
+      status.description === "Accepted" &&
+      stdout.includes("ALL_TESTS_PASSED")
+    ) {
+      return res.json({ result: "correct code", output: stdout, error: stderr });
+      console.log(stderr)
     } else {
-      return res.json({ result: "incorrect code", output: stdout });
+      return res.json({
+        result: "incorrect code",
+        output: stdout,
+        error: stderr,
+      });
     }
-  });
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).json({ error: "Execution error" });
+  }
 });
 
 app.listen(PORT, () => {

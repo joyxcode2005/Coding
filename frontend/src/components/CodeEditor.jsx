@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
 import { languageOptions } from "../constants";
@@ -7,13 +7,28 @@ import Modal from "./Modal";
 const rapidApikey = import.meta.env.VITE_YOUR_RAPIDAPI_KEY;
 
 const CodeEditor = ({ difficulty }) => {
+  // State varialble to store the user's code
+
   const [solution, setSolution] = useState(
     difficulty === "easy"
-      ? "// Write your code here\n int* twoSum(int* nums, int numsSize, int target, int* returnSize){}"
+      ? "// Write your code here\n#include <stdio.h>\n#include <stdlib.h>\n#include <stdbool.h>\n#include <string.h>\n\nint* twoSum(int* nums, int numsSize, int target, int* returnSize){}"
       : difficulty === "medium"
       ? "// Write your code here"
       : "// Write your code here"
   );
+
+  /*
+  STATE VARIABLES:
+
+  languageId: The id of the language selected by the user
+  result: The output of the user's code
+  language: The name of the language selected by the user
+  output: The output of the user's code
+  apiResponse: The response from the API
+  showModal: Whether to show the modal or not
+  loadingModal: Whether to show the loading modal or not
+  */
+
   const [languageId, setLanguageId] = useState(48);
   const [result, setResult] = useState(null);
   const [language, setLanguage] = useState("C");
@@ -22,6 +37,12 @@ const CodeEditor = ({ difficulty }) => {
   const [showModal, setShowModal] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
 
+  // To bring the color coding of the editor on initial load
+  useEffect(() => {
+    setLanguage(languageOptions[0].monaco);
+  }, []);
+
+  // To change the language selected by the user
   const handleLanguageChange = (e) => {
     const selectedLang = languageOptions.find(
       (lang) => lang.name === e.target.value
@@ -62,7 +83,7 @@ const CodeEditor = ({ difficulty }) => {
       switch (difficulty) {
         case "easy":
           setSolution(
-            `// Write your code here\npublic class TwoSum {\n  public static int[] twoSum(int[] nums, int target) {\n}\n}`
+            `// Write your code here\nclass TwoSum {\n  public static int[] twoSum(int[] nums, int target) {\n}\n}`
           );
           break;
         case "medium":
@@ -77,7 +98,9 @@ const CodeEditor = ({ difficulty }) => {
     }
   };
 
+  // To handle the frontend compilation of the user's code
   const handleCompile = async () => {
+    // API request options...
     const options = {
       method: "POST",
       url: "https://judge0-ce.p.rapidapi.com/submissions",
@@ -96,12 +119,10 @@ const CodeEditor = ({ difficulty }) => {
     try {
       const response = await axios.request(options);
       const token = response.data.token;
-
       if (!token) {
         setOutput("No token returned from the API");
         return;
       }
-
       // Polling for the result
       let result = null;
       while (true) {
@@ -130,6 +151,12 @@ const CodeEditor = ({ difficulty }) => {
     }
   };
 
+  // To handle the submission of the user's code
+  /* 
+    On submit, the user's code is sent to the backend for testing and scoring
+    First the user's code is sent to the backend for testing by hitting the /test endpoint, if the user's code is correct then the user's score is sent to the backend by hitting the /score endpoint and the score is dispalyed using the score modal.
+    And if the user's code is incorrect then the user's code fails the /test endpoint the /score endpoint is not hit and the user's code is not displayed using the score modal.
+  */
   const handleSubmit = async () => {
     // Check if there's at least one non-comment, non-empty line
     const hasNonCommentLine = solution.split("\n").some((line) => {
@@ -182,9 +209,11 @@ const CodeEditor = ({ difficulty }) => {
     }
   };
 
+  // Frontend
   return (
     <div className="flex flex-col h-[100%] w-[65%]">
       <div className="absolute">
+        {/* The Score Modal Popup */}
         <Modal
           isOpen={showModal}
           onClose={() => setShowModal(false)}
@@ -193,6 +222,7 @@ const CodeEditor = ({ difficulty }) => {
         />
       </div>
       <div className="w-full p-2 flex items-center gap-4">
+        {/* Dropdown for language options */}
         <select
           onChange={handleLanguageChange}
           className="bg-[#1E1E1E] px-4 py-2 rounded-xl text-white font-bold cursor-pointer"
@@ -216,6 +246,7 @@ const CodeEditor = ({ difficulty }) => {
           Submit
         </button>
       </div>
+      {/* Built-in editor */}
       <Editor
         theme="vs-dark"
         height="45vh"

@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const Modal = ({ isOpen, loading, response }) => {
   if (!isOpen) return null;
 
-  console.log("This is the modal response: ", response);
 
   const renderFormattedResponse = () => {
 

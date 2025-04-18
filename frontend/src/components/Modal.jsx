@@ -48,7 +48,8 @@ const Modal = ({ isOpen, loading, response }) => {
             📖 <span className="font-medium">{line}</span>
           </p>
         );
-      } else if (line.toLowerCase().includes("overall score")) {
+      } else if (Math.round(line.toLowerCase().includes("overall score"))) {
+        localStorage.setItem("easyScore", line);
         return (
           <p
             key={index}
@@ -66,6 +67,8 @@ const Modal = ({ isOpen, loading, response }) => {
       }
     });
   };
+
+  localStorage.setItem("easyAttempted", true);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">

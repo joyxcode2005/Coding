@@ -11,6 +11,17 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const handleRoundClick = (round) => {
+    const isAttempted = localStorage.getItem("easyAttempted");
+    const score = localStorage.getItem("easyScore");
+    console.log(isAttempted);
+
+    if (isAttempted === "true") {
+      alert(
+        `You have already attempted this round , your round score is ${score}`
+      );
+
+      return;
+    }
     setSelectedRound(round);
     setShowModal(true);
   };
@@ -83,9 +94,7 @@ const HomePage = () => {
                     Cancel
                   </button>
                 </div>
-                {error && (
-                  <p className="text-red-500 mt-2">{error}</p>
-                )}
+                {error && <p className="text-red-500 mt-2">{error}</p>}
               </form>
             </div>
           </div>

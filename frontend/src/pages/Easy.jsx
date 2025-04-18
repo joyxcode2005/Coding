@@ -3,17 +3,15 @@ import CodeEditor from "../components/CodeEditor";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { easyQuestion } from "../constants";
+import { Remarkable } from "remarkable";
+import EasyQuestion from "../components/EasyQuestion";
 
-const RoundOne = () => {
-  const [markdown, setMarkdown] = useState("");
+const Easy = () => {
+  var md = new Remarkable();
+  const renderedContent = md.render(easyQuestion);
 
-  useEffect(() => {
-    fetch("/Round1.md")
-      .then((response) => response.text())
-      .then((text) => {
-        setMarkdown(text);
-      });
-  }, []);
+  const testMarkdown = "# Question 1";
 
   return (
     <div className="w-full bg-black text-white h-screen flex items-center justify-center p-2">
@@ -29,14 +27,12 @@ const RoundOne = () => {
               Back
             </Link>
           </div>
-          <div className="markdown-content mt-10">
-            <ReactMarkdown>{markdown}</ReactMarkdown>
-          </div>
+          <EasyQuestion />
         </div>
-        <CodeEditor difficulty="easy"  />
+        <CodeEditor difficulty="easy" />
       </div>
     </div>
   );
 };
 
-export default RoundOne;
+export default Easy;

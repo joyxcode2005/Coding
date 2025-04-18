@@ -67,7 +67,7 @@ const CodeEditor = ({ difficulty }) => {
       switch (difficulty) {
         case "easy":
           setSolution(
-            `// Write your code here\nint* twoSum(int* nums, int numsSize, int target, int* returnSize){}`
+            "// Write your code here\n#include <stdio.h>\n#include <stdlib.h>\n#include <stdbool.h>\n#include <string.h>\n\nint* twoSum(int* nums, int numsSize, int target, int* returnSize){}"
           );
           break;
         case "medium":
@@ -83,7 +83,7 @@ const CodeEditor = ({ difficulty }) => {
       switch (difficulty) {
         case "easy":
           setSolution(
-            `// Write your code here\nclass TwoSum {\n  public static int[] twoSum(int[] nums, int target) {\n}\n}`
+            `// Write your code here\nclass TwoSum {\n  public static int[] twoSum(int[] nums, int target) {\n\n\t}\n}`
           );
           break;
         case "medium":
@@ -256,7 +256,7 @@ const CodeEditor = ({ difficulty }) => {
         onChange={(value) => setSolution(value)}
         options={{
           mouseWheelZoom: true,
-          fontSize: 14,
+          fontSize: 18,
         }}
       />
       <div className="w-full h-[40vh] bg-[#1E1E1E] p-2 rounded-xl mt-2 overflow-y-auto">

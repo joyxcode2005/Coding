@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
-const RoundTwo = () => {
+const Hard = () => {
   const [markdown, setMarkdown] = useState("");
 
   useEffect(() => {
@@ -39,4 +39,4 @@ const RoundTwo = () => {
   );
 };
 
-export default RoundTwo;
+export default Hard;

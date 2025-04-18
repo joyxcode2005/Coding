@@ -1,20 +1,9 @@
 import React, { useEffect, useState } from "react";
 import CodeEditor from "../components/CodeEditor";
-import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
-const RoundThree = () => {
-  const [markdown, setMarkdown] = useState("");
-
-  useEffect(() => {
-    fetch("/Round1.md")
-      .then((response) => response.text())
-      .then((text) => {
-        setMarkdown(text);
-      });
-  }, []);
-
+const Medium = () => {
   return (
     <div className="w-full bg-black text-white h-screen flex items-center justify-center p-2">
       <div className="w-screen h-screen flex items-center p-4 gap-2 rounded-3xl">
@@ -29,14 +18,12 @@ const RoundThree = () => {
               Back
             </Link>
           </div>
-          <div className="markdown-content mt-10">
-            <ReactMarkdown>{markdown}</ReactMarkdown>
-          </div>
+          <div className="markdown-content mt-10"></div>
         </div>
-        <CodeEditor />
+        <CodeEditor difficulty="medium" />
       </div>
     </div>
   );
 };
 
-export default RoundThree;
+export default Medium;

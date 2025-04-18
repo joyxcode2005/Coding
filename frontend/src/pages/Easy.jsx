@@ -3,16 +3,9 @@ import CodeEditor from "../components/CodeEditor";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { easyQuestion } from "../constants";
-import { Remarkable } from "remarkable";
 import EasyQuestion from "../components/EasyQuestion";
 
 const Easy = () => {
-  var md = new Remarkable();
-  const renderedContent = md.render(easyQuestion);
-
-  const testMarkdown = "# Question 1";
-
   return (
     <div className="w-full bg-black text-white h-screen flex items-center justify-center p-2">
       <div className="w-screen h-screen flex items-center p-4 gap-2 rounded-3xl">

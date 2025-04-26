@@ -1,14 +1,27 @@
 public class Main {
     public static void main(String[] args) {
         try {
-            int[] result1 = TwoSum.twoSum(new int[]{2, 7, 11, 15}, 9);
-            int[] result2 = TwoSum.twoSum(new int[]{3, 2, 4}, 6);
-            int[] result3 = TwoSum.twoSum(new int[]{3, 3}, 6);
-
-            assert result1[0] == 0 && result1[1] == 1 : "Test 1 Failed";
-            assert result2[0] == 1 && result2[1] == 2 : "Test 2 Failed";
-            assert result3[0] == 0 && result3[1] == 1 : "Test 3 Failed";
-
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{1, 2, 3}), new int[]{1, 2, 4});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{4, 3, 2, 1}), new int[]{4, 3, 2, 2});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{9}), new int[]{1, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{0}), new int[]{1});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{9, 9}), new int[]{1, 0, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{8, 9, 9}), new int[]{9, 0, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{1, 9, 9}), new int[]{2, 0, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{2, 3, 9}), new int[]{2, 4, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{9, 9, 9, 9}), new int[]{1, 0, 0, 0, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{1, 2, 9}), new int[]{1, 3, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{1, 0, 0}), new int[]{1, 0, 1});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{7, 6, 9}), new int[]{7, 7, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{2, 9, 9}), new int[]{3, 0, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{9, 0, 9}), new int[]{9, 1, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{9, 9, 9}), new int[]{1, 0, 0, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{5}), new int[]{6});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{1, 9}), new int[]{2, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{3, 9, 9}), new int[]{4, 0, 0});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{1, 0, 0, 0}), new int[]{1, 0, 0, 1});
+            assert java.util.Arrays.equals(Solution.plusOne(new int[]{9, 8, 9}), new int[]{9, 9, 0});
+            
             System.out.println("ALL_TESTS_PASSED");
         } catch (AssertionError e) {
             System.out.println("FAIL");

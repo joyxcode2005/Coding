@@ -65,10 +65,12 @@ app.post("/test", async (req, res) => {
   // Combine solution + test case (make sure testCaseCode calls the solution code)
   const combinedCode = `${solution}\n\n${testCaseCode}`;
 
+  console.log("Combined Code:", combinedCode);
+
 
   try {
     const response = await axios.post(
-      "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true",
+      "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true?base64_encoded=false",
       {
         source_code: combinedCode,
         language_id: langId,

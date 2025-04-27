@@ -273,8 +273,8 @@ const HomePage = () => {
                 </p>
                 <div className="flex items-center gap-3 mt-2">
                   <span className="text-gray-400">Your score:</span>
-                  <span className="text-3xl font-bold text-white">
-                    {attemptedScore}
+                  <span className="text-lg font-bold text-white">
+                    {attemptedScore.split("=")[1]}
                   </span>
                 </div>
               </div>

@@ -11,7 +11,7 @@ const CodeEditor = ({ difficulty }) => {
 
   const [solution, setSolution] = useState(
     difficulty === "easy"
-      ? "// Write your code here\n#include <stdio.h>\n#include <stdlib.h>\n#include <stdbool.h>\n#include <string.h>\n\nint* twoSum(int* nums, int numsSize, int target, int* returnSize){}"
+      ? "// Write your code here\n#include <stdio.h>\n#include <stdlib.h>\n#include <stdbool.h>\n#include <string.h>\n\nint* plusOne(int* digits, int digitsSize,int* returnSize){}"
       : difficulty === "medium"
       ? "// Write your code here"
       : "// Write your code here"
@@ -52,7 +52,7 @@ const CodeEditor = ({ difficulty }) => {
     if (selectedLang.name === "Python") {
       switch (difficulty) {
         case "easy":
-          setSolution(`# Write your code here\ndef twoSum(nums, target):`);
+          setSolution(`# Write your code here\ndef plusOne(digits):`);
           break;
         case "medium":
           setSolution(`# Write your code here`);
@@ -67,23 +67,23 @@ const CodeEditor = ({ difficulty }) => {
       switch (difficulty) {
         case "easy":
           setSolution(
-            "// Write your code here\n#include <stdio.h>\n#include <stdlib.h>\n#include <stdbool.h>\n#include <string.h>\n\nint* twoSum(int* nums, int numsSize, int target, int* returnSize){}"
+            "// Write your code here\n#include <stdio.h>\n#include <stdlib.h>\n#include <stdbool.h>\n#include <string.h>\n\nint* plusOne(int* digits, int digitsSize, int* returnSize){}"
           );
           break;
         case "medium":
-          setSolution(`# Write your code here`);
+          setSolution(`// Write your code here`);
           break;
         case "hard":
-          setSolution(`# Write your code here`);
+          setSolution(`// Write your code here`);
           break;
         default:
-          setSolution(`# Write your code here`);
+          setSolution(`// Write your code here`);
       }
     } else if (selectedLang.name === "Java") {
       switch (difficulty) {
         case "easy":
           setSolution(
-            `// Write your code here\nclass TwoSum {\n  public static int[] twoSum(int[] nums, int target) {\n\n\t}\n}`
+            `// Write your code here\nclass TwoSum {\n  public static int[] plusOne(int[] digits) {\n\n\t}\n}`
           );
           break;
         case "medium":

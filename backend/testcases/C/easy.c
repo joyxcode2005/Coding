@@ -1,4 +1,3 @@
-// Forward declaration of user's function
 bool arraysEqual(int *a, int *b, int size)
 {
   for (int i = 0; i < size; i++)
@@ -12,33 +11,46 @@ bool arraysEqual(int *a, int *b, int size)
 int main()
 {
   int size;
+  bool all_passed = true;
 
-  int nums1[] = {2, 7, 11, 15};
-  int *result1 = twoSum(nums1, 4, 9, &size);
-  int expected1[] = {0, 1};
-
-  int nums2[] = {3, 2, 4};
-  int *result2 = twoSum(nums2, 3, 6, &size);
-  int expected2[] = {1, 2};
-
-  int nums3[] = {3, 3};
-  int *result3 = twoSum(nums3, 2, 6, &size);
-  int expected3[] = {0, 1};
-
-  if (
-      arraysEqual(result1, expected1, 2) &&
-      arraysEqual(result2, expected2, 2) &&
-      arraysEqual(result3, expected3, 2))
+  struct
   {
-    printf("ALL_TESTS_PASSED\n");
-  }
-  else
+    int input[100];
+    int inputSize;
+    int expected[101];
+    int expectedSize;
+  } testCases[] = {
+      {{1, 2, 3}, 3, {1, 2, 4}, 3},
+      {{4, 3, 2, 1}, 4, {4, 3, 2, 2}, 4},
+      {{9}, 1, {1, 0}, 2},
+      {{0}, 1, {1}, 1},
+      {{9, 9}, 2, {1, 0, 0}, 3},
+      {{8, 9, 9}, 3, {9, 0, 0}, 3},
+      {{1, 9, 9}, 3, {2, 0, 0}, 3},
+      {{2, 3, 9}, 3, {2, 4, 0}, 3},
+      {{9, 9, 9, 9}, 4, {1, 0, 0, 0, 0}, 5},
+      {{1, 2, 9}, 3, {1, 3, 0}, 3},
+      {{1, 0, 0}, 3, {1, 0, 1}, 3},
+      {{7, 6, 9}, 3, {7, 7, 0}, 3},
+      {{2, 9, 9}, 3, {3, 0, 0}, 3},
+      {{9, 0, 9}, 3, {9, 1, 0}, 3},
+      {{9, 9, 9}, 3, {1, 0, 0, 0}, 4},
+      {{5}, 1, {6}, 1},
+      {{1, 9}, 2, {2, 0}, 2},
+      {{3, 9, 9}, 3, {4, 0, 0}, 3},
+      {{1, 0, 0, 0}, 4, {1, 0, 0, 1}, 4},
+      {{9, 8, 9}, 3, {9, 9, 0}, 3}};
+
+  for (int i = 0; i < 20; i++)
   {
-    printf("FAIL\n");
+    int *result = plusOne(testCases[i].input, testCases[i].inputSize, &size);
+    if (!(size == testCases[i].expectedSize && arraysEqual(result, testCases[i].expected, size)))
+    {
+      all_passed = false;
+    }
+    free(result);
   }
 
-  free(result1);
-  free(result2);
-  free(result3);
+  printf("%s\n", all_passed ? "ALL_TESTS_PASSED" : "FAIL");
   return 0;
 }

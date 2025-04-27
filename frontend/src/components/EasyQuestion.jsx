@@ -2,34 +2,81 @@ import React from "react";
 
 const EasyQuestion = () => {
   return (
-    <div className="prose prose-invert">
-      <h1 className="mt-10 text-2xl font-semibold mb-4">Easy Question: Two Sum </h1>
-      <p>
-        Given an array of integers <code>nums</code> and an integer{" "}
-        <code>target</code>, return indices of the two numbers such that they
-        add up to <code>target</code>
+    <div className="p-6 bg-[#1E1E1E] text-white rounded-xl max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Easy Question: Plus One</h1>
+
+      <p className="mb-4">
+        You are given a <strong>large integer</strong> represented as an integer
+        array <code className="bg-[#353535] px-1 rounded">digits</code>, where
+        each <code className="bg-[#353535] px-1 rounded">digits[i]</code> is the{" "}
+        <em>ith</em> digit of the integer.
       </p>
-      <p>
-        You may assume that each input would have <b>exactly one solution</b>,
-        and you may not use the same element twice
+
+      <p className="mb-4">
+        The digits are ordered from most significant to least significant in
+        left-to-right order. The large integer does not contain any leading{" "}
+        <code className="bg-[#353535] px-1 rounded">0's</code>.
       </p>
-      You can return the answer in any order
-      <h2>Example 1:</h2>
-      <p>
-        Input: <code>nums = [2,7,11,15]</code>, <code>target = 9</code>
+
+      <p className="mb-6">
+        Increment the large integer by one and return the{" "}
+        <em>resulting array of digits</em>.
       </p>
-      <p>
-        Output: <code>[0,1]</code>
-      </p>
-      <p>
-        Explanation: Because <code>nums[0] + nums[1] == 9</code>, we return{" "}
-        <code>[0, 1]</code>
-      </p>
-      <h2>Example 2:</h2>
-      <p>
-        Input: <code>nums = [3,2,4]</code>, <code>target = 6</code>
-        <p>Explaination : Because <code>nums[1] + nums[2] == 6</code>, we return{" "}</p>
-      </p>
+
+      <h2 className="text-xl font-semibold mb-2">Examples:</h2>
+      <ul className="list-disc list-inside space-y-4">
+        <li>
+          <strong>Input:</strong>{" "}
+          <code className="bg-[#353535] px-1 rounded">digits = [1, 2, 3]</code>
+          <br />
+          <strong>Output:</strong>{" "}
+          <code className="bg-[#353535] px-1 rounded">[1, 2, 4]</code>
+          <br />
+          <strong>Explanation:</strong> The array represents the integer 123.
+          Incrementing by one gives 124.
+        </li>
+
+        <li>
+          <strong>Input:</strong>{" "}
+          <code className="bg-[#353535] px-1 rounded">
+            digits = [4, 3, 2, 1]
+          </code>
+          <br />
+          <strong>Output:</strong>{" "}
+          <code className="bg-[#353535] px-1 rounded">[4, 3, 2, 2]</code>
+          <br />
+          <strong>Explanation:</strong> 4321 + 1 = 4322.
+        </li>
+
+        <li>
+          <strong>Input:</strong>{" "}
+          <code className="bg-[#353535] px-1 rounded">digits = [9]</code>
+          <br />
+          <strong>Output:</strong>{" "}
+          <code className="bg-[#353535] px-1 rounded">[1, 0]</code>
+          <br />
+          <strong>Explanation:</strong> 9 + 1 = 10.
+        </li>
+      </ul>
+
+      <h2 className="text-xl font-semibold mt-6 mb-2">Constraints:</h2>
+      <ul className="list-disc list-inside space-y-1">
+        <li>
+          <code className="bg-[#353535] px-1 rounded">
+            1 &lt;= digits.length &lt;= 100
+          </code>
+        </li>
+        <li>
+          <code className="bg-[#353535] px-1 rounded">
+            0 &lt;= digits[i] &lt;= 9
+          </code>
+        </li>
+        <li>
+          <code className="bg-[#353535] px-1 rounded">digits</code> does not
+          contain any leading{" "}
+          <code className="bg-[#353535] px-1 rounded">0's</code>
+        </li>
+      </ul>
     </div>
   );
 };

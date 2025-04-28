@@ -17,18 +17,6 @@ const CodeEditor = ({ difficulty }) => {
       : "// Write your code here"
   );
 
-  /*
-  STATE VARIABLES:
-
-  languageId: The id of the language selected by the user
-  result: The output of the user's code
-  language: The name of the language selected by the user
-  output: The output of the user's code
-  apiResponse: The response from the API
-  showModal: Whether to show the modal or not
-  loadingModal: Whether to show the loading modal or not
-  */
-
   const [languageId, setLanguageId] = useState(48);
   const [result, setResult] = useState(null);
   const [language, setLanguage] = useState("C");
@@ -50,15 +38,18 @@ const CodeEditor = ({ difficulty }) => {
     setLanguageId(selectedLang.id);
     setLanguage(selectedLang.monaco);
     if (selectedLang.name === "Python") {
+      console.log(difficulty);
       switch (difficulty) {
         case "easy":
           setSolution(`# Write your code here\ndef plusOne(digits):`);
           break;
         case "medium":
-          setSolution(`# Write your code here`);
+          setSolution(
+            `# Write your code here\nclass MinStack(object):\n\tdef __init__(self):\n\n\n\tdef push(self, x):\n\n\n\tdef pop(self):\n\n\n\tdef top(self):\n\n\n\tdef getMin(self):`
+          );
           break;
         case "hard":
-          setSolution(`# Write your code here`);
+          setSolution(`# Write your code here\ndef wordBreak(s, wordDict):`);
           break;
         default:
           setSolution(`# Write your code here`);
@@ -211,10 +202,11 @@ const CodeEditor = ({ difficulty }) => {
 
   // Frontend
   return (
-    <div className="flex flex-col h-[100%] w-[65%]">
+    <div className="flex flex-col h-[100%] w-[55%]">
       <div className="absolute">
         {/* The Score Modal Popup */}
         <Modal
+          difficulty={difficulty}
           isOpen={showModal}
           onClose={() => setShowModal(false)}
           loading={loadingModal}

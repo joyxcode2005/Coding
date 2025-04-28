@@ -3,6 +3,7 @@ import CodeEditor from "../components/CodeEditor";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import HardQuestion from "../components/HardQuestion";
 
 const Hard = () => {
   const [markdown, setMarkdown] = useState("");
@@ -29,11 +30,9 @@ const Hard = () => {
               Back
             </Link>
           </div>
-          <div className="markdown-content mt-10">
-            <ReactMarkdown>{markdown}</ReactMarkdown>
-          </div>
+          <HardQuestion />
         </div>
-        <CodeEditor />
+        <CodeEditor difficulty={"hard"} />
       </div>
     </div>
   );

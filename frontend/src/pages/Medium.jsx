@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import CodeEditor from "../components/CodeEditor";
 import { Link } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import MediumQuestion from "../components/MediumQuestion";
 
 const Medium = () => {
   return (
@@ -18,6 +19,7 @@ const Medium = () => {
               Back
             </Link>
           </div>
+          <MediumQuestion />
           <div className="markdown-content mt-10"></div>
         </div>
         <CodeEditor difficulty="medium" />

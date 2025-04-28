@@ -1,7 +1,4 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<stdbool.h>
+
 
 // Structure to store a list of sentences
 typedef struct {

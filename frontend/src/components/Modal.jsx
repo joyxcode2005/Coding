@@ -1,12 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Modal = ({ isOpen, loading, response }) => {
+const Modal = ({ isOpen, loading, response, difficulty }) => {
   if (!isOpen) return null;
 
-
   const renderFormattedResponse = () => {
-
     if (!response || typeof response !== "string") return null;
 
     const lines = response
@@ -49,7 +47,16 @@ const Modal = ({ isOpen, loading, response }) => {
           </p>
         );
       } else if (Math.round(line.toLowerCase().includes("overall score"))) {
-        localStorage.setItem("easyScore", line);
+        if (difficulty === "easy") {
+          localStorage.setItem("easyScore", line);
+          localStorage.setItem("easyAttempted", true);
+        } else if (difficulty === "medium") {
+          localStorage.setItem("mediumScore", line);
+          localStorage.setItem("mediumAttempted", true);
+        } else if (difficulty === "hard") {
+          localStorage.setItem("hardScore", line);
+          localStorage.setItem("hardAttempted", true);
+        }
         return (
           <p
             key={index}
@@ -67,8 +74,6 @@ const Modal = ({ isOpen, loading, response }) => {
       }
     });
   };
-
-  localStorage.setItem("easyAttempted", true);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">

@@ -74,7 +74,7 @@ const CodeEditor = ({ difficulty }) => {
       switch (difficulty) {
         case "easy":
           setSolution(
-            `// Write your code here\nclass TwoSum {\n  public static int[] plusOne(int[] digits) {\n\n\t}\n}`
+            `// Write your code here\nclass PlusOne {\n  public static int[] plusOne(int[] digits) {\n\n\t}\n}`
           );
           break;
         case "medium":
@@ -94,7 +94,7 @@ const CodeEditor = ({ difficulty }) => {
     // API request options...
     const options = {
       method: "POST",
-      url: "https://judge0-ce.p.rapidapi.com/submissions",
+      url: "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=true",
       params: { base64_encoded: "false", fields: "*" },
       headers: {
         "content-type": "application/json",
@@ -249,6 +249,13 @@ const CodeEditor = ({ difficulty }) => {
         options={{
           mouseWheelZoom: true,
           fontSize: 18,
+          automaticLayout: true,
+          quickSuggestions: { other: true, comments: true, strings: true,  },
+          suggestOnTriggerCharacters: true,
+          acceptSuggestionOnEnter: "on",
+          wordBasedSuggestions: true, 
+          tabCompletion: "on", 
+          parameterHints: { enabled: true },
         }}
       />
       <div className="w-full h-[40vh] bg-[#1E1E1E] p-2 rounded-xl mt-2 overflow-y-auto">

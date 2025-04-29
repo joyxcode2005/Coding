@@ -1,3 +1,6 @@
+
+
+// Function to compare arrays
 bool arraysEqual(int *a, int *b, int size)
 {
   for (int i = 0; i < size; i++)
@@ -41,14 +44,23 @@ int main()
       {{1, 0, 0, 0}, 4, {1, 0, 0, 1}, 4},
       {{9, 8, 9}, 3, {9, 9, 0}, 3}};
 
-  for (int i = 0; i < 20; i++)
+  int numTests = sizeof(testCases) / sizeof(testCases[0]);
+
+  for (int i = 0; i < numTests; i++)
   {
     int *result = plusOne(testCases[i].input, testCases[i].inputSize, &size);
+
     if (!(size == testCases[i].expectedSize && arraysEqual(result, testCases[i].expected, size)))
     {
       all_passed = false;
+      printf("Test %d FAILED\n", i + 1);
     }
-    free(result);
+
+    // ✅ Only free result if it was dynamically allocated
+    if (result != testCases[i].input)
+    {
+      free(result);
+    }
   }
 
   printf("%s\n", all_passed ? "ALL_TESTS_PASSED" : "FAIL");

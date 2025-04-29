@@ -43,6 +43,7 @@ app.post("/score", async (req, res) => {
 app.post("/test", async (req, res) => {
   const { solution, language, difficulty } = req.body;
 
+  console.log(solution, language, difficulty);
   
   const langId = languageMap[language];
 
@@ -70,7 +71,7 @@ app.post("/test", async (req, res) => {
 
   try {
     const response = await axios.post(
-      "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true?base64_encoded=false",
+      "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true?base64_encoded=true",
       {
         source_code: combinedCode,
         language_id: langId,
@@ -92,6 +93,8 @@ app.post("/test", async (req, res) => {
     ) {
       return res.json({ result: "correct code", output: stdout, error: stderr });
     } else {
+      console.log("Output:", stdout);
+      console.log("Error:", stderr);
       return res.json({
         result: "incorrect code",
         output: stdout,

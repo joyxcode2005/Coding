@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
-import { languageOptions } from "../constants";
+import { easyCBoilerPlate, easyJavaBoilerPlate, easyPythonBoilerPlate, hardCBoilerPlate, hardJavaBoilerPlate, hardPythonBoilerPlate, languageOptions, mediumCBoilerPlate, mediumJavaBoilerPlate, mediumPythonBoilerPlate } from "../constants";
 import Modal from "./Modal";
 
 const rapidApikey = import.meta.env.VITE_YOUR_RAPIDAPI_KEY;
@@ -11,14 +11,13 @@ const CodeEditor = ({ difficulty }) => {
 
   const [solution, setSolution] = useState(
     difficulty === "easy"
-      ? "// Write your code here\n#include <stdio.h>\n#include <stdlib.h>\n#include <stdbool.h>\n#include <string.h>\n\nint* plusOne(int* digits, int digitsSize,int* returnSize){}"
+      ? easyCBoilerPlate
       : difficulty === "medium"
-      ? "// Write your code here"
-      : "// Write your code here"
+      ? mediumCBoilerPlate
+      : hardCBoilerPlate
   );
 
   const [languageId, setLanguageId] = useState(48);
-  const [result, setResult] = useState(null);
   const [language, setLanguage] = useState("C");
   const [output, setOutput] = useState("");
   const [apiResponse, setApiResponse] = useState("");
@@ -38,18 +37,15 @@ const CodeEditor = ({ difficulty }) => {
     setLanguageId(selectedLang.id);
     setLanguage(selectedLang.monaco);
     if (selectedLang.name === "Python") {
-      console.log(difficulty);
       switch (difficulty) {
         case "easy":
-          setSolution(`# Write your code here\ndef plusOne(digits):`);
+          setSolution(easyPythonBoilerPlate);
           break;
         case "medium":
-          setSolution(
-            `# Write your code here\nclass MinStack(object):\n\tdef __init__(self):\n\n\n\tdef push(self, x):\n\n\n\tdef pop(self):\n\n\n\tdef top(self):\n\n\n\tdef getMin(self):`
-          );
+          setSolution(mediumPythonBoilerPlate);
           break;
         case "hard":
-          setSolution(`# Write your code here\ndef wordBreak(s, wordDict):`);
+          setSolution(hardPythonBoilerPlate);
           break;
         default:
           setSolution(`# Write your code here`);
@@ -57,15 +53,13 @@ const CodeEditor = ({ difficulty }) => {
     } else if (selectedLang.name === "C") {
       switch (difficulty) {
         case "easy":
-          setSolution(
-            "// Write your code here\n#include <stdio.h>\n#include <stdlib.h>\n#include <stdbool.h>\n#include <string.h>\n\nint* plusOne(int* digits, int digitsSize, int* returnSize){}"
-          );
+          setSolution(easyCBoilerPlate);
           break;
         case "medium":
-          setSolution(`// Write your code here`);
+          setSolution(mediumCBoilerPlate);
           break;
         case "hard":
-          setSolution(`// Write your code here`);
+          setSolution(hardCBoilerPlate);
           break;
         default:
           setSolution(`// Write your code here`);
@@ -73,15 +67,13 @@ const CodeEditor = ({ difficulty }) => {
     } else if (selectedLang.name === "Java") {
       switch (difficulty) {
         case "easy":
-          setSolution(
-            `// Write your code here\nclass PlusOne {\n  public static int[] plusOne(int[] digits) {\n\n\t}\n}`
-          );
+          setSolution(easyJavaBoilerPlate);
           break;
         case "medium":
-          setSolution(`// Write your code here`);
+          setSolution(mediumJavaBoilerPlate);
           break;
         case "hard":
-          setSolution(`// Write your code here`);
+          setSolution(hardJavaBoilerPlate);
           break;
         default:
           setSolution(`// Write your code here`);
@@ -90,64 +82,50 @@ const CodeEditor = ({ difficulty }) => {
   };
 
   // To handle the frontend compilation of the user's code
-  const handleCompile = async () => {
+  const handleRun = async () => {
+    // Check if there's at least one non-comment, non-empty line
+    const hasNonCommentLine = solution.split("\n").some((line) => {
+      const trimmed = line.trim();
+      return (
+        trimmed !== "" && !trimmed.startsWith("//") && !trimmed.startsWith("#")
+      );
+    });
+    if (!hasNonCommentLine) {
+      setOutput("Please write your code before submitting.");
+      return;
+    }
+
     // API request options...
-    const options = {
+    const testOptions = {
       method: "POST",
-      url: "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=true",
-      params: { base64_encoded: "false", fields: "*" },
-      headers: {
-        "content-type": "application/json",
-        "X-RapidAPI-Key": rapidApikey,
-        "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-      },
+      url: import.meta.env.VITE_BACKEND_URL + "/test",
       data: {
-        source_code: solution,
-        language_id: languageId,
+        difficulty,
+        solution,
+        language,
+      },
+      headers: {
+        "Content-Type": "application/json",
       },
     };
 
+    // API request to the backend server for testing the code
     try {
-      const response = await axios.request(options);
-      const token = response.data.token;
-      if (!token) {
-        setOutput("No token returned from the API");
-        return;
-      }
-      // Polling for the result
-      let result = null;
-      while (true) {
-        const res = await axios.get(
-          `https://judge0-ce.p.rapidapi.com/submissions/${token}`,
-          {
-            params: { base64_encoded: "false", fields: "*" },
-            headers: {
-              "X-RapidAPI-Key": rapidApikey,
-              "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-            },
-          }
+      const response = await axios.request(testOptions);
+      if (response.data.result === "correct code") {
+        setOutput(
+          "All test cases passed!! \nCode is correct! \nReady to submit!"
         );
-        if (res.data.status.id >= 3) {
-          result = res.data;
-          break;
-        }
-        // Add a delay to avoid overwhelming the API
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // wait 2 seconds
+      } else {
+        setOutput(
+          "Test cases failed!! \n Code is incorrect! \n Please check your code!"
+        );
       }
-      setResult(result);
-      setOutput(result.stdout || result.stderr || "No output");
     } catch (error) {
-      console.error(error);
-      setOutput("Error during code execution");
+      console.log("Error: ", error);
     }
   };
 
-  // To handle the submission of the user's code
-  /* 
-    On submit, the user's code is sent to the backend for testing and scoring
-    First the user's code is sent to the backend for testing by hitting the /test endpoint, if the user's code is correct then the user's score is sent to the backend by hitting the /score endpoint and the score is dispalyed using the score modal.
-    And if the user's code is incorrect then the user's code fails the /test endpoint the /score endpoint is not hit and the user's code is not displayed using the score modal.
-  */
   const handleSubmit = async () => {
     // Check if there's at least one non-comment, non-empty line
     const hasNonCommentLine = solution.split("\n").some((line) => {
@@ -226,7 +204,7 @@ const CodeEditor = ({ difficulty }) => {
           ))}
         </select>
         <button
-          onClick={handleCompile}
+          onClick={handleRun}
           className="bg-yellow-500 px-4 py-2 rounded-xl text-white font-bold cursor-pointer"
         >
           Run Code
@@ -250,16 +228,16 @@ const CodeEditor = ({ difficulty }) => {
           mouseWheelZoom: true,
           fontSize: 18,
           automaticLayout: true,
-          quickSuggestions: { other: true, comments: true, strings: true,  },
+          quickSuggestions: { other: true, comments: true, strings: true },
           suggestOnTriggerCharacters: true,
           acceptSuggestionOnEnter: "on",
-          wordBasedSuggestions: true, 
-          tabCompletion: "on", 
+          wordBasedSuggestions: true,
+          tabCompletion: "on",
           parameterHints: { enabled: true },
         }}
       />
       <div className="w-full h-[40vh] bg-[#1E1E1E] p-2 rounded-xl mt-2 overflow-y-auto">
-        <pre className={result?.stderr ? "text-red-500" : "text-white"}>
+        <pre className={output.includes("incorrect") ? "text-red-500" : output.includes("correct") ? "text-green-500" : "text-white"}>
           <h3 className="text-2xl uppercase font-semibold">Output</h3>
           {output}
         </pre>

@@ -63,6 +63,14 @@ const HomePage = () => {
       {/* Grid lines background */}
       <div className="absolute inset-0 grid-background opacity-20"></div>
 
+      {/* Warning Component */}
+      <div>
+        <div className="w-[90%] absolute top-4 left-1/2 -translate-x-1/2 bg-yellow-500/20 text-yellow-500 text-center px-4 py-2 rounded-md text-lg flex items-center gap-2 animate-pulse">
+          Once you submit the code and generate the score , you can no longer attempt the question again.
+          But before you submit, you can run as many times as you want. <br />
+        </div>
+      </div>
+
       <div className="rounded-2xl shadow-2xl backdrop-blur-sm bg-gray-900/70 border border-gray-700 p-12 w-full max-w-5xl z-10">
         <div className="flex flex-col items-center mb-12">
           <h1 className="text-5xl font-source-code font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400">

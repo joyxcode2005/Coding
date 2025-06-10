@@ -10,6 +10,7 @@ const HomePage = () => {
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [attemptedRound, setAttemptedRound] = useState(null);
   const [attemptedScore, setAttemptedScore] = useState(null);
+  const [showPasswordInfo, setShowPasswordInfo] = useState(false);
 
   const navigate = useNavigate();
 
@@ -63,6 +64,28 @@ const HomePage = () => {
       {/* Grid lines background */}
       <div className="absolute inset-0 grid-background opacity-20"></div>
 
+      {/* Info Icon */}
+      <button
+        onClick={() => setShowPasswordInfo(true)}
+        className="absolute top-6 right-6 z-20 bg-gray-800/50 backdrop-blur-sm border border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700/50 p-3 rounded-full transition-all duration-300 hover:scale-110"
+        title="View access codes"
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+      </button>
+
       {/* Warning Component */}
 
       <div className="rounded-2xl shadow-2xl backdrop-blur-sm bg-gray-900/70 border border-gray-700 p-12 w-full max-w-5xl z-10">
@@ -97,7 +120,8 @@ const HomePage = () => {
         </div>
       </div>
 
-      {showModal && (
+      {/* Password Info Modal */}
+      {showPasswordInfo && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn">
           <div
             className="bg-gray-800 border border-gray-700 text-white p-8 rounded-lg shadow-2xl w-full max-w-md animate-slideUp"
@@ -107,20 +131,103 @@ const HomePage = () => {
             }}
           >
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-200">
-                Enter Password
-              </h3>
-              <div
-                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  selectedRound === "EASY"
-                    ? "bg-green-300/20 text-green-300"
-                    : selectedRound === "MEDIUM"
-                    ? "bg-yellow-300/20 text-yellow-300"
-                    : "bg-red-400/20 text-red-400"
-                }`}
-              >
-                {selectedRound}
+              <h3 className="text-2xl font-bold text-gray-200">Access Codes</h3>
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-6 h-6 text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-3a1 1 0 011-1h2.586l6.414-6.414A6 6 0 0119 9z"
+                  ></path>
+                </svg>
               </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-green-300"></div>
+                    <span className="text-green-300 font-medium">EASY</span>
+                  </div>
+                  <code className="bg-gray-800 px-3 py-1 rounded text-sm font-mono text-gray-200">
+                    easypass
+                  </code>
+                </div>
+              </div>
+
+              <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-yellow-300"></div>
+                    <span className="text-yellow-300 font-medium">MEDIUM</span>
+                  </div>
+                  <code className="bg-gray-800 px-3 py-1 rounded text-sm font-mono text-gray-200">
+                    mediumpass
+                  </code>
+                </div>
+              </div>
+
+              <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-orange-400"></div>
+                    <span className="text-orange-400 font-medium">HARD</span>
+                  </div>
+                  <code className="bg-gray-800 px-3 py-1 rounded text-sm font-mono text-gray-200">
+                    hardpass
+                  </code>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center mt-6">
+              <button
+                type="button"
+                onClick={() => setShowPasswordInfo(false)}
+                className="bg-white text-gray-900 font-medium px-8 py-3 rounded-lg hover:bg-gray-200 transition-colors duration-300"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn">
+          <div
+            className="bg-gray-800 border border-gray-700 text-white p-8 rounded-lg shadow-2xl w-full max-w-md animate-slideUp"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 100% 100%, rgba(255,255,255,0.03) 0%, transparent 40%)",
+            }}
+          >
+            <div className="flex justify-between items-center flex-col mb-6 ">
+              <div className="flex justify-between items-center mb-2 w-full">
+                <h3 className="text-2xl font-bold text-gray-200">
+                  Enter Password
+                </h3>
+                <div
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    selectedRound === "EASY"
+                      ? "bg-green-300/20 text-green-300"
+                      : selectedRound === "MEDIUM"
+                      ? "bg-yellow-300/20 text-yellow-300"
+                      : "bg-orange-400/20 text-orange-400"
+                  }`}
+                >
+                  {selectedRound}
+                </div>
+              </div>
+              <div className="text-left w-full font-bold text-red-500">To get the passwords, click on the (i) button</div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">

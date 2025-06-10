@@ -23,3 +23,4 @@ export const languageMap = {
   c: 50,
   java: 62,
 };
+

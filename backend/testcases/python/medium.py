@@ -1,5 +1,3 @@
-
-
 # Test cases for MinStack
 try:
     minStack = MinStack()

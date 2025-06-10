@@ -58,13 +58,6 @@ void dfs(char *s, char **wordDict, int wordDictSize, char *path, ResultList *res
     }
 }
 
-// User's function
-ResultList wordBreak(char *s, char **wordDict, int wordDictSize) {
-    ResultList result;
-    initResultList(&result);
-    dfs(s, wordDict, wordDictSize, "", &result);
-    return result;
-}
 
 // Helper function to check if two arrays of strings are equal (ignoring order)
 bool arraysEqual(char **a, int sizeA, char **b, int sizeB) {

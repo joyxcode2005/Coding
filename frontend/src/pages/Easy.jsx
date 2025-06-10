@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import CodeEditor from "../components/CodeEditor";
-import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import EasyQuestion from "../components/EasyQuestion";

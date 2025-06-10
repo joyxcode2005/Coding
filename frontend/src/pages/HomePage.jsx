@@ -46,7 +46,7 @@ const HomePage = () => {
       case "MEDIUM":
         return "border-yellow-300 text-yellow-300 hover:bg-yellow-300/10";
       case "HARD":
-        return "border-red-400 text-red-400 hover:bg-red-400/10";
+        return "border-orange-400 text-orange-400 hover:bg-orange-400/10";
       default:
         return "";
     }
@@ -64,25 +64,21 @@ const HomePage = () => {
       <div className="absolute inset-0 grid-background opacity-20"></div>
 
       {/* Warning Component */}
-      <div>
-        <div className="w-[90%] absolute top-4 left-1/2 -translate-x-1/2 bg-yellow-500/20 text-yellow-500 text-center px-4 py-2 rounded-md text-lg flex items-center gap-2 animate-pulse">
-          Once you submit the code and generate the score , you can no longer attempt the question again.
-          But before you submit, you can run as many times as you want. <br />
-        </div>
-      </div>
 
       <div className="rounded-2xl shadow-2xl backdrop-blur-sm bg-gray-900/70 border border-gray-700 p-12 w-full max-w-5xl z-10">
         <div className="flex flex-col items-center mb-12">
           <h1 className="text-5xl font-source-code font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400">
-            Innovarium Coding Event:{" "}
-            <span className="text-purple-600">ALGOGEN</span>
+            Coding <span className="text-purple-600">Contest</span> Platform
           </h1>
-          <p className="text-gray-400 mt-4 text-xl font-light tracking-wide">
-            Attempt the problem statements in any order.
-          </p>
-          <p className="text-gray-400 mt-2 text-xl font-light tracking-wide">
-            Time Limit: 2 hours
-          </p>
+          <div className="flex flex-col items-center justify-center mt-2 gap-5">
+            <div className="w-[90%] b text-red-500 text-center px-4 py-2 rounded-md text-lg flex items-center gap-2 animate-pulse">
+              You can run the code as many times as you like, but once you
+              submit and get a score, you can't attempt the question again.
+            </div>
+            <div className="text-white text-xl font-bold">
+              Attempt from the three level of difficulties in any order
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-col md:flex-row justify-center gap-6 mt-8">

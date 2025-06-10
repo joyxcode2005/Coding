@@ -90,8 +90,12 @@ const HomePage = () => {
 
       <div className="rounded-2xl shadow-2xl backdrop-blur-sm bg-gray-900/70 border border-gray-700 p-12 w-full max-w-5xl z-10">
         <div className="flex flex-col items-center mb-12">
-          <h1 className="text-5xl font-source-code font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400">
-            Coding <span className="text-purple-600">Contest</span> Platform
+          <h1 className="text-4xl font-source-code font-black tracking-tighter text-white flex items-center gap-5">
+            <img src="logo.png" alt="logo" className="w-20 h-20 rounded-full" />
+            <span className="text-blue-600 uppercase text-5xl font-bold">
+              Algo-Judge
+            </span>{" "}
+            : Coding Contest Platform
           </h1>
           <div className="flex flex-col items-center justify-center mt-2 gap-5">
             <div className="w-[90%] b text-red-500 text-center px-4 py-2 rounded-md text-lg flex items-center gap-2 animate-pulse">
@@ -227,7 +231,9 @@ const HomePage = () => {
                   {selectedRound}
                 </div>
               </div>
-              <div className="text-left w-full font-bold text-red-500">To get the passwords, click on the (i) button</div>
+              <div className="text-left w-full font-bold text-red-500">
+                To get the passwords, click on the (i) button
+              </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
